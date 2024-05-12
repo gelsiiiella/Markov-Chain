@@ -8,13 +8,14 @@ def get_input():
         state = st.text_input(f"Enter the name of state {i+1}")
         states.append(state)
 
-    transition_probabilities = {}
+    transition_probabilities = []
 
 
     for state in states:
         transition_probabilities[state] = {}
         st.subheader(f"Transition probabilities from state {state}: ")
         for target_state in states:
+            key = f"{state}-{target_state}"
             prob = st.number_input(f"Probability of transitioning to state {target_state}",min_value=0.0,max_value=1.0,step=0.01)
             transition_probabilities[state][target_state] = prob
 
