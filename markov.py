@@ -1,4 +1,5 @@
 import streamlit as st
+import numpy as np
 
 def get_input():
     num_states = st.number_input("Enter the number of states", min_value=1, step=1)
@@ -27,7 +28,9 @@ def create_transition_matrix(states, transition_probabilities):
     for i, state in enumerate(transition_probabilities):
         for j, prob in probs.items():
             transition_matrix[i][j] = prob
-            
+
+    return transition_matrix
+
     
 def main():
     st.title("Markov Chain")
