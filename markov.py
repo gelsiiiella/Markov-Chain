@@ -10,7 +10,7 @@ def get_input():
         state = st.text_input(f"Enter the name of state {i+1}")
         states.append(state)
 
-    transition_periods = ["Next month", "Next week", "Custom"]  
+    transition_periods = ["Next month", "Next week", "Custom"] 
     selected_period = st.selectbox("Select the transition period", transition_periods)
 
     if selected_period == "Custom":
@@ -28,15 +28,15 @@ def compute_transition_matrix(states, selected_period, custom_period):
     if selected_period == "Next month":
         transition_probability = 1.0 / 30  
     elif selected_period == "Next week":
-        transition_probability = 1.0 / 7  
+        transition_probability = 1.0 / 7 
     elif selected_period == "Custom":
         transition_probability = 1.0 / custom_period
 
-   
+    
     for i in range(num_states):
         for j in range(num_states):
             if i == j:
-                transition_matrix[i][j] = 1 - transition_probability 
+                transition_matrix[i][j] = 1 - transition_probability  
             else:
                 transition_matrix[i][j] = transition_probability / (num_states - 1)  
 
@@ -55,16 +55,14 @@ def main():
 
     transition_matrix = compute_transition_matrix(states, selected_period, custom_period)
 
-   
-    transition_df = pd.DataFrame(transition_matrix, index=states, columns=[f"To {state}" for state in states])
+  
+    transition_df = pd.DataFrame(transition_matrix, index=states)
 
-   
-    transition_df.columns = pd.io.parsers.ParserBase({'names':transition_df.columns})._maybe_dedup_names(transition_df.columns)
+    transition_df.columns = [f"To {state}" for state in states]
 
     st.write("Transition Matrix:")
     st.table(transition_df)
 
-  
 
 if __name__ == "__main__":
     main()
