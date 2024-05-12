@@ -25,7 +25,7 @@ def get_input():
 def create_transition_matrix(states, transition_probabilities):
     num_states = len(states)
     transition_matrix = np.zeros((num_states, num_states))
-    for i, state in enumerate(transition_probabilities):
+    for i, probs in enumerate(transition_probabilities):
         for j, prob in probs.items():
             transition_matrix[i][j] = prob
 
@@ -40,6 +40,10 @@ def main():
 
     st.write("States:", states)
     st.write("Transition Probabilities:", transition_probabilities)
+
+    transition_matrix = create_transition_matrix(states, transition_probabilities)
+    st.write("Transition Matrix:")
+    st.write(transition_matrix)
 
 if __name__ == "__main__":
     main()
