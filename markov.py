@@ -1,5 +1,6 @@
 import streamlit as st
 import numpy as np
+import pandas as pd
 
 def get_input():
     num_states = st.number_input("Enter the number of states", min_value=1, step=1)
@@ -9,29 +10,19 @@ def get_input():
         state = st.text_input(f"Enter the name of state {i+1}")
         states.append(state)
 
-    transition_probabilities = []  
+    transition_probabilities = []  # Initialize as list
 
     for state_index, state in enumerate(states):
-        probabilities = {}  
+        probabilities = []  # List for transition probabilities of current state
         st.subheader(f"Transition probabilities from state {state}: ")
         for target_state_index, target_state in enumerate(states):
-            key = f"{state_index}-{target_state_index}" 
+            key = f"{state_index}-{target_state_index}"  # Use unique index-based key
             prob = st.number_input(f"Probability of transitioning to state {target_state}", key=key, min_value=0.0, max_value=1.0, step=0.01)
-            probabilities[target_state] = prob
-        transition_probabilities.append(probabilities)  
+            probabilities.append(prob)
+        transition_probabilities.append(probabilities)  # Append list to list
 
     return states, transition_probabilities
 
-def create_transition_matrix(states, transition_probabilities):
-    num_states = len(states)
-    transition_matrix = np.zeros((num_states, num_states))
-    for i, probs in enumerate(transition_probabilities):
-        for j, prob in probs.items():
-            transition_matrix[i][j] = prob
-
-    return transition_matrix
-
-    
 def main():
     st.title("Markov Chain")
     st.write("Enter the details for your Markov chain.")
@@ -41,12 +32,16 @@ def main():
     st.write("States:", states)
     st.write("Transition Probabilities:", transition_probabilities)
 
-    transition_matrix = create_transition_matrix(states, transition_probabilities)
+    transition_matrix = np.array(transition_probabilities)  # Convert list of lists to numpy array
+
+    # Create DataFrame for the transition matrix with row and column labels
+    transition_df = pd.DataFrame(transition_matrix, index=states, columns=states)
+
     st.write("Transition Matrix:")
-    st.write(transition_matrix)
+    st.table(transition_df)
+
+    # Additional computations can be performed here
 
 if __name__ == "__main__":
     main()
-
-
 # https://docs.streamlit.io/library/api-reference/widgets/st.number_input
