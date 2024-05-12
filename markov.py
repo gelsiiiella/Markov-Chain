@@ -10,16 +10,16 @@ def get_input():
         state = st.text_input(f"Enter the name of state {i+1}")
         states.append(state)
 
-    transition_probabilities = []  # Initialize as list
+    transition_probabilities = []  
 
     for state_index, state in enumerate(states):
-        probabilities = []  # List for transition probabilities of current state
+        probabilities = [] 
         st.subheader(f"Transition probabilities from state {state}: ")
         for target_state_index, target_state in enumerate(states):
-            key = f"{state_index}-{target_state_index}"  # Use unique index-based key
+            key = f"{state_index}-{target_state_index}"  
             prob = st.number_input(f"Probability of transitioning to state {target_state}", key=key, min_value=0.0, max_value=1.0, step=0.01)
             probabilities.append(prob)
-        transition_probabilities.append(probabilities)  # Append list to list
+        transition_probabilities.append(probabilities)  
 
     return states, transition_probabilities
 
@@ -32,15 +32,15 @@ def main():
     st.write("States:", states)
     st.write("Transition Probabilities:", transition_probabilities)
 
-    transition_matrix = np.array(transition_probabilities)  # Convert list of lists to numpy array
+    transition_matrix = np.array(transition_probabilities) 
 
-    # Create DataFrame for the transition matrix with row and column labels
+    
     transition_df = pd.DataFrame(transition_matrix, index=states, columns=states)
 
     st.write("Transition Matrix:")
     st.table(transition_df)
 
-    # Additional computations can be performed here
+    
 
 if __name__ == "__main__":
     main()
