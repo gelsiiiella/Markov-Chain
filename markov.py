@@ -24,7 +24,7 @@ def compute_transition_matrix(states, selected_period, custom_period):
     num_states = len(states)
     transition_matrix = np.zeros((num_states, num_states))
 
-
+   
     if selected_period == "Next month":
         transition_probability = 1.0 / 30  
     elif selected_period == "Next week":
@@ -32,7 +32,7 @@ def compute_transition_matrix(states, selected_period, custom_period):
     elif selected_period == "Custom":
         transition_probability = 1.0 / custom_period
 
-  
+   
     for i in range(num_states):
         for j in range(num_states):
             if i == j:
@@ -55,12 +55,16 @@ def main():
 
     transition_matrix = compute_transition_matrix(states, selected_period, custom_period)
 
-    transition_df = pd.DataFrame(transition_matrix, index=states, columns=states)
+   
+    transition_df = pd.DataFrame(transition_matrix, index=states, columns=[f"To {state}" for state in states])
+
+   
+    transition_df.columns = pd.io.parsers.ParserBase({'names':transition_df.columns})._maybe_dedup_names(transition_df.columns)
 
     st.write("Transition Matrix:")
     st.table(transition_df)
 
-
+  
 
 if __name__ == "__main__":
     main()
